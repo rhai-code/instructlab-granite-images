@@ -44,7 +44,9 @@ RUN set -eux; \
 FROM base
 # install cuda based instructlab
 
-RUN dnf -y install libcudnn9 libcudnn9-devel cuda-cccl-12-4 libnccl-2.22.3-1+cuda12.4.x86_64 nvtop
+RUN dnf -y install libcudnn9 libcudnn9-devel cuda-cccl-12-4 libnccl-2.22.3-1+cuda12.4.x86_64
+RUN python3 -m venv --upgrade-deps venv
+RUN source venv/bin/activate
 RUN set -eux; \
     export CMAKE_ARGS="-DLLAMA_CUDA=on -DLLAMA_NATIVE=off"; \
     pip install --no-cache instructlab[cuda]==${IL_VERSION}; \
@@ -52,4 +54,6 @@ RUN set -eux; \
     rm -rf /root/.cache
     # TODO install and remove packages that are only needed for "pip install" rather than relying on "base" stage (or cuda:*-devel)?
 # copy the specially crafted folders with the model as a `--link` layer so that it is a reproducible layer
+RUN set -eux; \
+    ilab config init --non-interactive --model-path models/granite-7b-lab-Q4_K_M.gguf
 COPY --from=build --link /target/ /

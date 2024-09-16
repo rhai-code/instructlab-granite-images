@@ -20,3 +20,9 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-contai
   sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
 
   sudo dnf install -y nvidia-container-toolkit
+
+  sudo nvidia-ctk runtime configure --runtime=docker
+
+  sudo systemctl restart docker
+
+  sudo docker run --rm --runtime=nvidia --gpus all instruct  tail -f /dev/null
