@@ -18,14 +18,18 @@ RUN set -eux; \
         git \
         python3.11-devel \
         python3.11-pip \
-    ; \
-    rm -rf /var/lib/apt/lists/*;
+        libcudnn8 \
+        libcudnn8-devel \
+        cuda-cccl-12-4 \
+        libnccl-2.22.3-1+cuda12.4.x86_64; 
+
+RUN dnf clean all;
+
 
 RUN alias python3='/usr/bin/python3.11'
 
-RUN dnf -y install libcudnn8 libcudnn8-devel cuda-cccl-12-4 libnccl-2.22.3-1+cuda12.4.x86_64
 
-RUN pip3.11 install torch
+# RUN pip3.11 install torch
 
 RUN pip3.11 cache remove llama_cpp_python
 RUN pip3.11 install --force-reinstall "llama_cpp_python[server]==0.2.79" --config-settings  cmake.args="-DLLAMA_CUDA=on"
@@ -36,7 +40,7 @@ RUN set -eux; \
 
 RUN set -eux; \
     pip3.11 install instructlab[cuda]==$IL_VERSION; 
-    # really remove pip cache
+    
 ENV TORCH_CUDA_ARCH_LIST="7.0 7.5 8.0 8.6 8.9 9.0+PTX"
 
 RUN set -eux; \
