@@ -15,7 +15,7 @@ sudo dnf remove -y docker \
 sudo dnf -y install dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
-vi /etc/yum.repos.d/docker-ce.repo
+sudo vi /etc/yum.repos.d/docker-ce.repo
 
 replace docker-ce-stable baseurl
 
@@ -23,33 +23,10 @@ baseurl=https://download.docker.com/linux/centos/$releasever/$basearch/stable
 
 sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
- sudo cat <<EOF >> /etc/docker/daemon.json
-{
-    "runtimes": {
-        "nvidia": {
-            "args": [],
-            "path": "nvidia-container-runtime"
-        }
-    },
-    "default-runtime": "nvidia"
-}
-EOF
+sudo dnf remove -y docker-buildx-plugin
 
-# instructlab-image
-<!-- 
-Install nvidia drivers
 
-sudo dnf install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
 
-sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-
-sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-$distro.repo
-
-sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-$distro.repo
-
-sudo dnf clean expire-cache
-
-sudo dnf module install nvidia-driver:open-dkms -->
 
 
 # Install nvidia container toolkit
@@ -61,7 +38,23 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-contai
 
   sudo nvidia-ctk runtime configure --runtime=docker
 
+   sudo cat <<EOF >> /etc/docker/daemon.json
+{
+    "runtimes": {
+        "nvidia": {
+            "args": [],
+            "path": "nvidia-container-runtime"
+        }
+    },
+    "default-runtime": "nvidia"
+}
+EOF
+
   sudo systemctl restart docker
+
+
+# Running the container
+
 
   sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:12.2.2-devel-ubi9  tail -f /dev/null
 
@@ -73,16 +66,19 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-contai
 
     sudo docker network create instructLab
 
-     sudo docker run --rm --runtime=nvidia --gpus all --name serve --network instructLab -p 8000:8000 instruct:0.5 ilab serve --model-path  /root/.cache/instructlab/models/instructlab/granite-7b-lab --backend=vllm -- --host serve
+     sudo docker run --rm --runtime=nvidia --gpus all --name serve --network instructLab -p 8000:8000 quay.io/hayesphilip/instructlab:0.8  ilab serve --model-path  /instructlab/granite-7b-lab --backend=vllm -- --host serve
 
-     sudo docker run --rm --runtime=nvidia --gpus all --network instructLab --name chat instruct:0.5 ilab model chat --endpoint-url http://serve:8000/v1 -qq Tell me a story about cheese
+     sudo docker run --rm --runtime=nvidia --gpus all --network instructLab --name chat quay.io/hayesphilip/instructlab:0.8  ilab model chat --endpoint-url http://serve:8000/v1 -qq Tell me a story about cars
 
 
 
-sudo docker run --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.7 ilab init  --non-interactive --model-path /instructlab/granite-7b-lab --taxonomy-path /root/.cache/instructlab/taxonomy
+sudo docker run --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.8 ilab init  --non-interactive --model-path /instructlab/granite-7b-lab --taxonomy-path /root/.cache/instructlab/taxonomy 
 
-sudo docker run --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.8 ilab generate --help  
+sudo chown -R instruct taxonomy/
 
-sudo docker run --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.8 ilab generate  --model /instructlab/granite-7b-lab --taxonomy-path /root/.cache/instructlab/taxonomy --output-dir /root/.cache/instructlab/datasets
+sudo docker run --rm --runtime=nvidia --gpus all --ipc=host -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab generate  --model /instructlab/granite-7b-lab --taxonomy-path /root/.cache/instructlab/taxonomy --output-dir /root/.cache/instructlab/datasets --gpus 4
 
-sudo docker run  --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.8 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-18T17_55_26.jsonl --ckpt-output-dir /root/.cache/instructlab/training --device cuda  --gpus 1
+sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-19T00_07_35.jsonl --ckpt-output-dir /root/.cache/instructlab/training --device cuda  --gpus 4
+
+
+sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-19T00_07_35.jsonl --ckpt-output-dir /root/.cache/instructlab/training --gpus 4 --device cuda   --deepspeed-cpu-offload-optimizer true --deepspeed-cpu-offload-optimizer-pin-memory true --effective-batch-size 32  --is-padding-free true  --lora-quantize-dtype null --lora-rank 0
