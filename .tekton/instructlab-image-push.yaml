@@ -16,6 +16,9 @@ metadata:
   name: instructlab-image-on-push
   namespace: phayes1-tenant
 spec:
+  timeouts:
+    # See https://tekton.dev/docs/pipelines/pipelineruns/#configuring-a-failure-timeout
+    pipeline: 6h
   taskRunSpecs:
     - pipelineTaskName: build-container
       stepSpecs:
