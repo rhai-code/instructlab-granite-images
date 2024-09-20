@@ -6,8 +6,8 @@ additional_args:
   lora_dropout: 0.1
   warmup_steps: 25
 checkpoint_at_epoch: true
-ckpt_output_dir: ~/.local/share/instructlab/checkpoints
-data_output_dir: ~/.local/share/instructlab/internal
+ckpt_output_dir: /instructlab/share/checkpoints
+data_output_dir: /instructlab/share/internal
 deepspeed_cpu_offload_optimizer: true
 effective_batch_size: 32
 is_padding_free: true

@@ -76,9 +76,20 @@ sudo docker run --rm --runtime=nvidia --gpus all -v /home/instruct/instructlab:/
 
 sudo chown -R instruct taxonomy/
 
-sudo docker run --rm --runtime=nvidia --gpus all --ipc=host -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab generate  --model /instructlab/granite-7b-lab --taxonomy-path /root/.cache/instructlab/taxonomy --output-dir /root/.cache/instructlab/datasets --gpus 4
+sudo docker run --rm --runtime=nvidia --gpus all --ipc=host -v /home/instruct/instructlab:/instructlab/share quay.io/hayesphilip/instructlab:0.11 ilab generate  --model /instructlab/granite-7b-lab --taxonomy-path /instructlab/share/taxonomy --output-dir /root/.cache/instructlab/datasets --gpus 4
 
-sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-19T00_07_35.jsonl --ckpt-output-dir /root/.cache/instructlab/training --device cuda  --gpus 4
+sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/instructlab/share quay.io/hayesphilip/instructlab:0.11 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-19T00_07_35.jsonl --ckpt-output-dir /root/.cache/instructlab/training --device cuda  --gpus 4
 
 
 sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/root/.cache/instructlab quay.io/hayesphilip/instructlab:0.11 ilab train   --model-path /instructlab/granite-7b-lab --data-path /root/.cache/instructlab/datasets/knowledge_train_msgs_2024-09-19T00_07_35.jsonl --ckpt-output-dir /root/.cache/instructlab/training --gpus 4 --device cuda   --deepspeed-cpu-offload-optimizer true --deepspeed-cpu-offload-optimizer-pin-memory true --effective-batch-size 32  --is-padding-free true  --lora-quantize-dtype null --lora-rank 0
+
+
+
+https://github.com/instructlab/taxonomy.git
+
+
+
+
+sudo docker run --rm --runtime=nvidia --gpus all --ipc=host -v /home/instruct/instructlab:/instructlab/share quay.io/hayesphilip/instructlab:0.15 ilab generate --model /instructlab/models/instructlab/granite-7b-lab  --gpus 4 --output-dir /instructlab/share/datasets
+
+sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v /home/instruct/instructlab:/instructlab/share quay.io/hayesphilip/instructlab:0.15 ilab train --gpus 4 --data-path /instructlab/share/datasets/knowledge_train_msgs_2024-09-20T14_51_48.jsonl
