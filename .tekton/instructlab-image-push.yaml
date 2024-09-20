@@ -16,6 +16,16 @@ metadata:
   name: instructlab-image-on-push
   namespace: phayes1-tenant
 spec:
+  taskRunSpecs:
+    - pipelineTaskName: build-container
+      stepSpecs:
+        - name: build
+          computeResources:
+            requests:
+              cpu: '2'
+              memory: 20Gi
+            limits:
+              memory: 20Gi
   params:
   - name: git-url
     value: '{{source_url}}'
