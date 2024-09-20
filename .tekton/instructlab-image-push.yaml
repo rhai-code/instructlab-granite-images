@@ -22,9 +22,10 @@ spec:
         - name: build
           computeResources:
             requests:
-              cpu: '2'
+              cpu: '8'
               memory: 20Gi
             limits:
+              cpu: '8'
               memory: 20Gi
   params:
   - name: git-url
