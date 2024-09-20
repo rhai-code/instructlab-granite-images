@@ -11,6 +11,7 @@ RUN set -eux; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
 ENV IL_VERSION=v0.18.4
 WORKDIR /instructlab
+
 RUN set -eux; \
     dnf -y update; \
     dnf install -y --setopt=install_weak_deps=False \
@@ -47,10 +48,12 @@ RUN set -eux; \
     pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01; \
     rm -rf /root/.cache 
 
-RUN set -eux; \
-    ilab config init --non-interactive --model-path /instructlab/granite-7b-lab
+COPY config.yaml /instructlab
 
-RUN ilab model download --repository instructlab/granite-7b-lab --model-dir /
+RUN set -eux; \
+    ilab config init --non-interactive --train-profile /instructlab/config.yaml
+
+RUN ilab model download --repository instructlab/granite-7b-lab --model-dir /instructlab/models
 
 ENV GIT_CONFIG_COUNT=1
 

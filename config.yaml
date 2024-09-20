@@ -1,0 +1,27 @@
+additional_args:
+  deepspeed_cpu_offload_optimizer_pin_memory: true
+  deepspeed_cpu_offload_optimizer_ratio: 1
+  learning_rate: 2.0e-05
+  lora_alpha: 32
+  lora_dropout: 0.1
+  warmup_steps: 25
+checkpoint_at_epoch: true
+ckpt_output_dir: ~/.local/share/instructlab/checkpoints
+data_output_dir: ~/.local/share/instructlab/internal
+deepspeed_cpu_offload_optimizer: true
+effective_batch_size: 32
+is_padding_free: true
+lora_quantize_dtype: null
+lora_rank: 0
+# good one for profile
+max_batch_len: 10000
+max_seq_len: 4096
+model_path: /instructlab/models/instructlab/granite-7b-lab
+num_epochs: 4
+phased_phase1_effective_batch_size: 4
+phased_phase1_num_epochs: 2
+phased_phase1_samples_per_save: 0
+phased_phase2_effective_batch_size: 4
+phased_phase2_num_epochs: 2
+phased_phase2_samples_per_save: 0
+save_samples: 0
