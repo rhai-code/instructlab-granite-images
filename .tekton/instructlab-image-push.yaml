@@ -25,11 +25,11 @@ spec:
         - name: build
           computeResources:
             requests:
-              cpu: '8'
-              memory: 20Gi
+              cpu: '24'
+              memory: 32Gi
             limits:
-              cpu: '8'
-              memory: 20Gi
+              cpu: '24'
+              memory: 32Gi
   params:
   - name: git-url
     value: '{{source_url}}'
