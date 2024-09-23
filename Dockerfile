@@ -42,7 +42,7 @@ RUN set -eux; \
 RUN set -eux; \
     pip3.11 install instructlab[cuda]==$IL_VERSION; 
     
-ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
+ENV TORCH_CUDA_ARCH_LIST="9.0+PTX"
 
 RUN set -eux; \
     pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01; \
