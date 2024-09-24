@@ -10,35 +10,21 @@ metadata:
       == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: test
+    appstudio.openshift.io/application: instructlabgranite
     appstudio.openshift.io/component: instructlab-image
     pipelines.appstudio.openshift.io/type: build
   name: instructlab-image-on-push
-  namespace: phayes1-tenant
+  namespace: ilab-community-tenant
 spec:
-  timeouts:
-    # See https://tekton.dev/docs/pipelines/pipelineruns/#configuring-a-failure-timeout
-    pipeline: 6h
-  taskRunSpecs:
-    - pipelineTaskName: build-container
-      stepSpecs:
-        - name: build
-          computeResources:
-            requests:
-              cpu: '60'
-              memory: 128Gi
-            limits:
-              cpu: '60'
-              memory: 128Gi
   params:
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/phayes1-tenant/test/instructlab-image:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/instructlabgranite/instructlab-image:{{revision}}
   - name: dockerfile
-    value: Dockerfile
+    value: /Dockerfile
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
@@ -203,7 +189,6 @@ spec:
       - name: netrc
         workspace: netrc
     - name: build-container
-      timeout: 5h
       params:
       - name: IMAGE
         value: $(params.output-image)
