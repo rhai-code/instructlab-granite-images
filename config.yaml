@@ -25,3 +25,6 @@ phased_phase2_effective_batch_size: 4
 phased_phase2_num_epochs: 2
 phased_phase2_samples_per_save: 0
 save_samples: 0
+generate:
+  teacher:
+    model_path: /instructlab/models/instructlab/granite-7b-lab
