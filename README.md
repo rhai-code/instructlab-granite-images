@@ -100,3 +100,14 @@ Run train
 
 
 `sudo dnf remove -y docker-buildx-plugin`
+
+## Mac 
+
+`docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share instruct-cpu ilab model download --repository instructlab/granite-7b-lab-GGUF --filename granite-7b-lab-Q4_K_M.gguf --model-dir /instructlab/share/models`
+
+`docker run --rm -v $INSTRUCTLAB_LOCAL:/instructlab/share --name serve --network host -p 8000:8000 instruct-cpu   ilab serve --model-path   /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf`
+
+
+ `docker run -it --rm  --name chat --network host instruct-cpu   ilab chat  --model /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf`
+
+ `docker run --rm  -v $INSTRUCTLAB_LOCAL:/instructlab/share instruct-cpu  ilab generate --model /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf   --output-dir /instructlab/share/datasets`

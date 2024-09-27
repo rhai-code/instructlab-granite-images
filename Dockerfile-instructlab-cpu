@@ -1,0 +1,46 @@
+FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 AS base
+
+# create a user, specific UID/GID is not necessisarily important, but designed to run as any `--user`
+RUN set -eux; \
+    groupadd -r ilab --gid=991; \
+    useradd -r -g ilab --uid=991 --home-dir=/instructlab --shell=/bin/bash ilab; \
+    install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
+ARG IL_VERSION=v0.19.0b1
+WORKDIR /instructlab
+
+RUN set -eux; \
+    dnf -y update; \
+    dnf install -y --setopt=install_weak_deps=False \
+        git \
+        python3.11-devel \
+        python3.11-pip \
+        make automake gcc gcc-c++;
+RUN dnf clean all;
+
+
+RUN alias python3='/usr/bin/python3.11'
+
+
+# RUN pip3.11 install torch
+
+
+RUN set -eux; \
+     pip3.11 install --no-cache instructlab==${IL_VERSION};
+
+
+RUN set -eux; \
+    ilab config init --non-interactive --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
+#  RUN ilab model download --repository instructlab/granite-7b-lab-GGUF --filename granite-7b-lab-Q4_K_M.gguf --model-dir /instructlab/models
+
+ENV GIT_CONFIG_COUNT=1
+
+ENV GIT_CONFIG_KEY_0=safe.directory
+
+ENV GIT_CONFIG_VALUE_0=*
+# COPY --from=build --link /target/ /
+
+COPY docker-entrypoint.sh /instructlab/docker-entrypoint.sh
+
+RUN ["chmod", "+x", "/instructlab/docker-entrypoint.sh"]
+
+ENTRYPOINT [ "/instructlab/docker-entrypoint.sh" ]

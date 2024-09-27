@@ -9,7 +9,7 @@ RUN set -eux; \
     groupadd -r ilab --gid=991; \
     useradd -r -g ilab --uid=991 --home-dir=/instructlab --shell=/bin/bash ilab; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
-ENV IL_VERSION=v0.18.4
+ARG IL_VERSION=v0.18.4
 WORKDIR /instructlab
 
 RUN set -eux; \
@@ -36,11 +36,11 @@ RUN pip3.11 cache remove llama_cpp_python
 RUN pip3.11 install --force-reinstall "llama_cpp_python[server]==0.2.79" --config-settings  cmake.args="-DLLAMA_CUDA=on"
 
 RUN set -eux; \
-     pip3.11 install --no-cache instructlab==$IL_VERSION;
+     pip3.11 install --no-cache instructlab==${IL_VERSION};
 
 
 RUN set -eux; \
-    pip3.11 install instructlab[cuda]==$IL_VERSION; 
+    pip3.11 install instructlab[cuda]==${IL_VERSION}; 
     
 ENV TORCH_CUDA_ARCH_LIST="9.0+PTX"
 
@@ -53,7 +53,7 @@ COPY config.yaml /instructlab
 
 RUN set -eux; \
     ilab config init --non-interactive --train-profile /instructlab/config.yaml --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
- RUN ilab model download --repository instructlab/granite-7b-lab --model-dir /instructlab/models
+# RUN ilab model download --repository instructlab/granite-7b-lab --model-dir /instructlab/models
 
 ENV GIT_CONFIG_COUNT=1
 

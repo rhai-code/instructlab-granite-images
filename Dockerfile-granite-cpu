@@ -1,0 +1,39 @@
+FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 
+
+WORKDIR /srv
+
+# install build tools and clone and compile llama.cpp
+RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget
+
+RUN git clone https://github.com/ggerganov/llama.cpp.git \
+  && cd llama.cpp \
+  && make -j CC=clang-17 CXX=clang++-17
+
+# FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 AS env-deploy
+
+# # copy openmp libraries
+# ENV LD_LIBRARY_PATH=/usr/local/lib
+# COPY --from=0 /usr/lib/llvm-17/lib/libomp.so.5 ${LD_LIBRARY_PATH}/libomp.so.5
+
+# # copy llama.cpp binaries
+RUN cp /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
+RUN cp /srv/llama.cpp/llama-server /usr/local/bin/llama-server
+
+# create llama user and set home directory
+RUN useradd --system --create-home llama
+
+# USER llama
+
+WORKDIR /home/llama
+
+EXPOSE 8080
+
+RUN ls
+
+RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
+# copy and set entrypoint script
+COPY docker-entrypoint.sh /home/llama/docker-entrypoint.sh
+
+RUN ["chmod", "+x", "/home/llama/docker-entrypoint.sh"]
+
+ENTRYPOINT [ "/home/llama/docker-entrypoint.sh" ]
