@@ -37,8 +37,6 @@ baseurl=https://download.docker.com/linux/centos/$releasever/$basearch/stable
 sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 
-
-
 ### Install nvidia container toolkit
 
 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html

@@ -10,8 +10,7 @@ RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset w
 RUN git clone https://github.com/ggerganov/llama.cpp.git
 
 RUN cd llama.cpp \
-  && make -j GGML_CUDA=1=1 CUDA_DOCKER_ARCH=all
-
+  && make -j GGML_CUDA=1
 # FROM registry.access.redhat.com/ubi8/ubi:8.10-1088  AS env-deploy
 
 # copy openmp and cuda libraries
