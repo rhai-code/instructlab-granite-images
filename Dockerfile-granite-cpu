@@ -22,7 +22,7 @@ RUN cp /srv/llama.cpp/llama-server /usr/local/bin/llama-server
 # create llama user and set home directory
 RUN useradd --system --create-home llama
 
-# USER llama
+USER llama
 
 WORKDIR /home/llama
 

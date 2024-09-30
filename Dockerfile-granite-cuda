@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2.2-devel-ubi9 AS env-build
+FROM nvidia/cuda:12.2.2-devel-ubi9 
 
 WORKDIR /srv
 
@@ -7,22 +7,19 @@ WORKDIR /srv
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget 
 
 
-RUN git clone https://github.com/ggerganov/llama.cpp.git \
-  && cd llama.cpp \
+RUN git clone https://github.com/ggerganov/llama.cpp.git
+
+RUN cd llama.cpp \
   && make -j LLAMA_CUDA=1 CUDA_DOCKER_ARCH=all
 
-FROM registry.access.redhat.com/ubi8/ubi:8.10-1088  AS env-deploy
+# FROM registry.access.redhat.com/ubi8/ubi:8.10-1088  AS env-deploy
 
 # copy openmp and cuda libraries
-ENV LD_LIBRARY_PATH=/usr/local/lib
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libgomp.so.1 ${LD_LIBRARY_PATH}/libgomp.so.1
-COPY --from=0 /usr/local/cuda/lib64/libcublas.so.12 ${LD_LIBRARY_PATH}/libcublas.so.12
-COPY --from=0 /usr/local/cuda/lib64/libcublasLt.so.12 ${LD_LIBRARY_PATH}/libcublasLt.so.12
-COPY --from=0 /usr/local/cuda/lib64/libcudart.so.12 ${LD_LIBRARY_PATH}/libcudart.so.12
+# ENV LD_LIBRARY_PATH=/usr/local/lib
 
-# copy llama.cpp binaries
-COPY --from=0 /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
-COPY --from=0 /srv/llama.cpp/llama-server /usr/local/bin/llama-server
+
+RUN cp /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
+RUN cp /srv/llama.cpp/llama-server /usr/local/bin/llama-server
 
 # create llama user and set home directory
 RUN useradd --system --create-home llama
