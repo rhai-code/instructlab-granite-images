@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 
+FROM registry.access.redhat.com/ubi9:9.4-1214.1726694543 AS env-build
 
 WORKDIR /srv
 
@@ -9,28 +9,25 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git \
   && cd llama.cpp \
   && make -j CC=clang-17 CXX=clang++-17
 
-# FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 AS env-deploy
+RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
 
-# # copy openmp libraries
-# ENV LD_LIBRARY_PATH=/usr/local/lib
-# COPY --from=0 /usr/lib/llvm-17/lib/libomp.so.5 ${LD_LIBRARY_PATH}/libomp.so.5
 
-# # copy llama.cpp binaries
-RUN cp /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
-RUN cp /srv/llama.cpp/llama-server /usr/local/bin/llama-server
+# Runtime image
+FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
-# create llama user and set home directory
-RUN useradd --system --create-home llama
+COPY --from=0 /usr/lib64/libomp.so ${LD_LIBRARY_PATH}/libomp.so
 
-USER llama
+# copy llama.cpp binaries
+COPY --from=0 /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
+COPY --from=0 /srv/llama.cpp/llama-server /usr/local/bin/llama-server
+COPY --from=0 /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.gguf
+
 
 WORKDIR /home/llama
 
 EXPOSE 8080
 
-RUN ls
-
-RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
 # copy and set entrypoint script
 COPY docker-entrypoint.sh /home/llama/docker-entrypoint.sh
 

@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2.2-devel-ubi9 
+FROM nvidia/cuda:12.6.1-devel-ubi9 
 
 WORKDIR /srv
 
@@ -14,26 +14,34 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git
 
 RUN cd llama.cpp \
   && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=ON ${CMAKE_ARGS} -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined . && \
-  cmake --build build --config Release -j$(nproc) && \
-# FROM registry.access.redhat.com/ubi8/ubi:8.10-1088  AS env-deploy
+  cmake --build build --config Release -j$(nproc) 
+
+RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
+FROM registry.access.redhat.com/ubi9/ubi-minimal AS env-deploy
 
 # copy openmp and cuda libraries
-# ENV LD_LIBRARY_PATH=/usr/local/lib
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
-
-RUN cp /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
-RUN cp /srv/llama.cpp/llama-server /usr/local/bin/llama-server
-
-# create llama user and set home directory
-RUN useradd --system --create-home llama
-
-USER llama
-
-WORKDIR /home/llama
-
-EXPOSE 8080
+COPY --from=0 /usr/local/cuda-12.6/compat/libcuda.so.1 ${LD_LIBRARY_PATH}/libcuda.so.1
+COPY --from=0  /srv/llama.cpp/build/src/libllama.so ${LD_LIBRARY_PATH}/libllama.so
+COPY --from=0  /srv/llama.cpp/build/ggml/src/libggml.so ${LD_LIBRARY_PATH}/libggml.so
+COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcudart.so.12 ${LD_LIBRARY_PATH}/libcudart.so.12
+COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublas.so.12 ${LD_LIBRARY_PATH}/libcublas.so.12
+COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublasLt.so.12 ${LD_LIBRARY_PATH}/libcublasLt.so.12
+COPY --from=0  /usr/lib64/libgomp.so.1 ${LD_LIBRARY_PATH}/libgomp.so.1
+COPY --from=0  /usr/lib64/libm.so.6 ${LD_LIBRARY_PATH}/libm.so.6
+COPY --from=0  /usr/lib64/libc.so.6 ${LD_LIBRARY_PATH}/libc.so.6
+COPY --from=0  /usr/lib64/libstdc++.so.6 ${LD_LIBRARY_PATH}/libstdc++.so.6
+COPY --from=0  /srv/llama.cpp/build/bin/llama-cli /usr/local/bin/llama-cli
+COPY --from=0  /srv/llama.cpp/build/bin/llama-server /usr/local/bin/llama-server
+COPY --from=0  /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.gguf
 
 # copy and set entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN ["chmod", "+x", "/usr/local/bin/docker-entrypoint.sh"]
+
+
+EXPOSE 8080
+
 
 ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
