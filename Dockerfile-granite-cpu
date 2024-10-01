@@ -5,6 +5,8 @@ WORKDIR /srv
 # install build tools and clone and compile llama.cpp
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget
 
+
+
 RUN git clone https://github.com/ggerganov/llama.cpp.git \
   && cd llama.cpp \
   && make -j CC=clang-17 CXX=clang++-17
@@ -14,6 +16,7 @@ RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/gra
 
 # Runtime image
 FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
+RUN microdnf install shadow-utils
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
 COPY --from=0 /usr/lib64/libomp.so ${LD_LIBRARY_PATH}/libomp.so
@@ -24,7 +27,6 @@ COPY --from=0 /srv/llama.cpp/llama-server /usr/local/bin/llama-server
 COPY --from=0 /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.gguf
 
 
-WORKDIR /home/llama
 
 EXPOSE 8080
 
@@ -32,5 +34,11 @@ EXPOSE 8080
 COPY docker-entrypoint.sh /home/llama/docker-entrypoint.sh
 
 RUN ["chmod", "+x", "/home/llama/docker-entrypoint.sh"]
+
+RUN useradd --system --create-home llama
+
+USER llama
+
+WORKDIR /home/llama
 
 ENTRYPOINT [ "/home/llama/docker-entrypoint.sh" ]
