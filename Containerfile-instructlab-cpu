@@ -26,7 +26,8 @@ RUN alias python3='/usr/bin/python3.11'
 
 RUN set -eux; \
      pip3.11 install --no-cache instructlab==${IL_VERSION};
-
+     
+USER ilab
 
 RUN set -eux; \
     ilab config init --non-interactive --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
@@ -39,9 +40,6 @@ ENV GIT_CONFIG_KEY_0=safe.directory
 ENV GIT_CONFIG_VALUE_0=*
 # COPY --from=build --link /target/ /
 
-COPY docker-entrypoint.sh /instructlab/docker-entrypoint.sh
-
-RUN ["chmod", "+x", "/instructlab/docker-entrypoint.sh"]
+COPY instructlab-license /licenses/instructlab-license
 
 
-USER ilab

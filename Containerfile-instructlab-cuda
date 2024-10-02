@@ -47,6 +47,7 @@ RUN set -eux; \
 
 COPY config.yaml /instructlab
 
+USER ilab
 
 RUN set -eux; \
     ilab config init --non-interactive --train-profile /instructlab/config.yaml --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
@@ -59,4 +60,5 @@ ENV GIT_CONFIG_KEY_0=safe.directory
 ENV GIT_CONFIG_VALUE_0=*
 # COPY --from=build --link /target/ /
 
-USER ilab
+COPY instructlab-license /licenses/instructlab-license
+

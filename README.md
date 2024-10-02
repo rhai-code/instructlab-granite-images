@@ -109,3 +109,14 @@ Run train
  `docker run -it --rm  --name chat --network host instruct-cpu   ilab chat  --model /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf`
 
  `docker run --rm  -v $INSTRUCTLAB_LOCAL:/instructlab/share instruct-cpu  ilab generate --model /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf   --output-dir /instructlab/share/datasets` 
+
+
+sudo docker run -p 8080:8080 quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b/granite-7b-lab-gguf:on-pr-589a50d3c590e84f2bf96f25f5b1ff6487849092-linux-arm64
+
+on-pr-589a50d3c590e84f2bf96f25f5b1ff6487849092-linux-arm64 
+
+
+sudo docker run  --rm --runtime=nvidia --gpus all --ipc=host  -p 8080:8080 quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b/granite-7b-lab-gguf-cuda:on-pr-f5e2186b42fa60ce3461186398584d64c878236c
+
+sha256:80c6f2e5dc0124aea8959ba2619e0304c3010391c982453d3fd18d4860a9bcccquay.io/redhat-user-workloads/ilab-community-tenant/granite-7b/granite-7b-lab-gguf:on-pr-69be042e14c16d3b41c80fc755d6c4c929f724d5-linux-x86-64
+quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b/granite-7b-lab-gguf@sha256:bad4c6fb706b9788b30dcd76e3d67916a67e5a8063a794247caaf045d023d662
