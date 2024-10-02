@@ -58,3 +58,5 @@ ENV GIT_CONFIG_KEY_0=safe.directory
 
 ENV GIT_CONFIG_VALUE_0=*
 # COPY --from=build --link /target/ /
+
+USER ilab
