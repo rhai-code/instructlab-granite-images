@@ -24,7 +24,7 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b/granite-7b-lab-gguf:{{revision}}
   - name: dockerfile
-    value: Containerfile-granite-cuda
+    value: Containerfile-granite-cpu
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
