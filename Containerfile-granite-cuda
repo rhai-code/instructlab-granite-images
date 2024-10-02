@@ -41,6 +41,9 @@ COPY --from=0  /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.
 # copy and set entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN ["chmod", "+x", "/usr/local/bin/docker-entrypoint.sh"]
+COPY granite-license /licenses/granite-license
+COPY llama-cpp-license /licenses/llama-cpp-license
+
 
 RUN useradd --system --create-home llama
 
