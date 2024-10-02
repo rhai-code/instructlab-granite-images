@@ -29,8 +29,8 @@ EXPOSE 8080
 # copy and set entrypoint script
 COPY docker-entrypoint.sh /home/llama/docker-entrypoint.sh
 
-COPY granite-license /licenses
-copy llama-cpp-license /licenses
+COPY granite-license /licenses/granite-license
+COPY llama-cpp-license /licenses/llama-cpp-license
 
 RUN ["chmod", "+x", "/home/llama/docker-entrypoint.sh"]
 
