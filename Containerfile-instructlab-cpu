@@ -2,8 +2,8 @@ FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 AS base
 
 # create a user, specific UID/GID is not necessisarily important, but designed to run as any `--user`
 RUN set -eux; \
-    groupadd -r ilab --gid=999; \
-    useradd -r -g ilab --uid=999 --home-dir=/instructlab --shell=/bin/bash ilab; \
+    groupadd -r ilab --gid=1000; \
+    useradd -r -g ilab --uid=1000 --home-dir=/instructlab --shell=/bin/bash ilab; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
 ARG IL_VERSION=v0.19.0
 WORKDIR /instructlab
