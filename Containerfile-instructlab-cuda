@@ -6,8 +6,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 #FROM nvidia/cuda:12.2.2-base-ubuntu22.04
 # create a user, specific UID/GID is not necessisarily important, but designed to run as any `--user`
 RUN set -eux; \
-    groupadd -r ilab --gid=991; \
-    useradd -r -g ilab --uid=991 --home-dir=/instructlab --shell=/bin/bash ilab; \
+    groupadd -r ilab --gid=999; \
+    useradd -r -g ilab --uid=999 --home-dir=/instructlab --shell=/bin/bash ilab; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
 ARG IL_VERSION=v0.19.0
 WORKDIR /instructlab
