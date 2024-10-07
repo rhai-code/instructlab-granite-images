@@ -62,3 +62,5 @@ ENV GIT_CONFIG_VALUE_0=*
 
 COPY instructlab-license /licenses/instructlab-license
 
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-12.2/compat
+
