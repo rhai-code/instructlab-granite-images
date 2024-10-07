@@ -2,8 +2,8 @@ FROM nvidia/cuda:12.2.2-devel-ubi9 AS base
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-# TODO research: possibly use the smaller cuda image?
-#FROM nvidia/cuda:12.2.2-base-ubuntu22.04
+# TODO research: possibly use the smaller cuda image
+#FROM nvidia/cuda:12.2.2-base-ubuntu22.04 
 # create a user, specific UID/GID is not necessisarily important, but designed to run as any `--user`
 RUN set -eux; \
     groupadd -r ilab --gid=1000; \
