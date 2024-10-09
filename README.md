@@ -1,11 +1,11 @@
 # InstructLab and Granite-7b-lam images
 
-This repository contains the Dockerfile to build a container images for the following:
+This repository contains the Dockerfile to build container images for the following:
 
-* The granite-7b-lab model served by llama.cpp 
-* The granite-7b-lab model served by llama.cpp with CUDA support
+* The granite-7b-lab-gguf model served by llama.cpp 
+* The granite-7b-lab-gguf model served by llama.cpp with CUDA support
 * InstructLab version 0.19.2
-* InstructLab version 0.19.2 with CUDA support.
+* InstructLab version 0.19.2 with CUDA support and vllm.
 
 For instructions on use, vist the following pages:
 
