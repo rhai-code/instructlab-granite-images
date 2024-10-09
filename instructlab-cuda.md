@@ -1,5 +1,7 @@
 # Instructlab with CUDA support
 
+This image contains the InstructLab CLI version 0.19.2 with CUDA support.  For usage examples, see below.
+
 ## Pre-requisites
 
 * Docker or Podman

@@ -1,4 +1,7 @@
-# Granite-7b with CUDA support
+# Granite-7b-lab-gguf with CUDA support
+
+
+This image contains the granite-7b-lab-gguf model and llama.cpp to serve the model.  Once the container starts the api should be available on http://127.0.0.1:8080/v1/chat/completions
 
 ## Pre-requisites
 
@@ -33,11 +36,11 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 ### docker
 
-`docker run --rm --runtime=nvidia --gpus all  --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 `
+`docker run --rm --runtime=nvidia --gpus all --ipc=host   --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 `
 
 ### podman
 
-`podman run --rm --device nvidia.com/gpu=all  --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0`
+`podman run --rm --device nvidia.com/gpu=all --ipc=host  --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0`
 
 
 ## Chat with the model
