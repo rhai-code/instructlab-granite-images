@@ -1,4 +1,4 @@
-# InstructLab + CUDA 12.2.2 drivers + Vllm
+# InstructLab and Granite-7b-lam images
 
 This repository contains the Dockerfile to build a container images for the following:
 
