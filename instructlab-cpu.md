@@ -1,4 +1,6 @@
-# Instructlab with CUDA support
+# Instructlab 
+
+This image contains the InstructLab CLI version 0.19.2.  For usage examples, see below.
 
 ## Pre-requisites
 
@@ -25,7 +27,6 @@ docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z quay.io/redhatai/instructl
 podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z quay.io/redhatai/instructlab:1.0 ilab model download --repository instructlab/granite-7b-lab-gguf  --model-dir /instructlab/share/models --filename granite-7b-lab-Q4_K_M.gguf 
 
 
-
 ## Serve the model
 
 ### docker
@@ -37,9 +38,6 @@ podman run --ipc=host  -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai
 
 ## Chat with the model
 
-
 docker run --ipc=host -it -p 8000:8000 --network host  quay.io/redhatai/instructlab:1.0 ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf
 
 podman run --ipc=host -it -p 8000:8000 --network host  quay.io/redhatai/instructlab:1.0 ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/granite-7b-lab-Q4_K_M.gguf
-
-
