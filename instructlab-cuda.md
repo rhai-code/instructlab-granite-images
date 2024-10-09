@@ -2,6 +2,8 @@
 
 This image contains the InstructLab CLI version 0.19.2 with CUDA support.  For usage examples, see below.
 
+For full InstructLab workflow, i.e. synthetic data generation and training it's recommended to use a g6.12large instance from AWS (https://aws.amazon.com/ec2/instance-types/g6/) which has 4 x NVIDIA L4 Tensor Core GPUs with 24 GB of memory per GPU.
+ 
 ## Pre-requisites
 
 * Docker or Podman
