@@ -1,4 +1,4 @@
-# InstructLab and Granite-7b-lam images
+# InstructLab and Granite-7b-lab images
 
 This repository contains the Dockerfile to build container images for the following:
 
