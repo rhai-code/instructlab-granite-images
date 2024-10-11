@@ -7,6 +7,8 @@ WORKDIR /srv
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget cmake libcurl-devel
 
 ARG CUDA_DOCKER_ARCH=all
+ARG MODEL_DOWNLOAD_URL
+ARG MODEL_PATH
 
 RUN export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=${CUDA_DOCKER_ARCH}";
 
@@ -18,8 +20,9 @@ RUN cd llama.cpp \
 
 # Download granite model
 
-RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
+RUN wget ${MODEL_DOWNLOAD_URL} -P /models
 FROM registry.access.redhat.com/ubi9/ubi-minimal AS env-deploy
+ARG MODEL_FILENANE
 RUN microdnf install shadow-utils
 # copy openmp and cuda libraries
 ENV LD_LIBRARY_PATH=/usr/local/lib
@@ -36,8 +39,9 @@ COPY --from=0  /usr/lib64/libc.so.6 ${LD_LIBRARY_PATH}/libc.so.6
 COPY --from=0  /usr/lib64/libstdc++.so.6 ${LD_LIBRARY_PATH}/libstdc++.so.6
 COPY --from=0  /srv/llama.cpp/build/bin/llama-cli /usr/local/bin/llama-cli
 COPY --from=0  /srv/llama.cpp/build/bin/llama-server /usr/local/bin/llama-server
-COPY --from=0  /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.gguf
+COPY --from=0 ${MODEL_PATH} ${MODEL_PATH} 
 
+ENV MODEL_PATH=/models/${MODEL_FILENANE}
 
 # copy and set entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

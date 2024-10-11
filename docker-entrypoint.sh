@@ -34,4 +34,4 @@ set_default_env_vars
 convert_llama_env_vars
 
 set -x
-llama-server  -m /models/granite-7b-lab-Q4_K_M.gguf  $LLAMA_ARGS
+llama-server  -m $MODEL_PATH  $LLAMA_ARGS

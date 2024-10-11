@@ -2,6 +2,8 @@
 
 This image contains the InstructLab CLI version 0.19.2.  For usage examples, see below.
 
+This image available in quay.io (quay.io/redhatai/instructlab:1.0) and Docker Hub (redhat/instructlab:1.0)
+
 ## Pre-requisites
 
 * Docker or Podman

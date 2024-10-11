@@ -2,6 +2,9 @@ FROM registry.access.redhat.com/ubi9:9.4-1214.1726694543 AS env-build
 
 WORKDIR /srv
 
+ARG MODEL_DOWNLOAD_URL
+
+
 # install build tools and clone and compile llama.cpp
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget
 
@@ -10,10 +13,11 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git \
   && make -j CC=clang-17 CXX=clang++-17
 
 
-RUN wget https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf -P /models
+RUN wget ${MODEL_DOWNLOAD_URL} -P /models
 
 # Runtime image
 FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
+ARG MODEL_FILENANE
 RUN microdnf install shadow-utils
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
@@ -22,8 +26,9 @@ COPY --from=0 /usr/lib64/libomp.so ${LD_LIBRARY_PATH}/libomp.so
 # copy llama.cpp binaries
 COPY --from=0 /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
 COPY --from=0 /srv/llama.cpp/llama-server /usr/local/bin/llama-server
-COPY --from=0 /models/granite-7b-lab-Q4_K_M.gguf /models/granite-7b-lab-Q4_K_M.gguf
+COPY --from=0 /models/${MODEL_FILENANE} /models/${MODEL_FILENANE} 
 
+ENV MODEL_PATH=/models/${MODEL_FILENANE}
 EXPOSE 8080
 
 # copy and set entrypoint script

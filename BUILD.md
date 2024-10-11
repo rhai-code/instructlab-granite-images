@@ -39,6 +39,6 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-contai
 
   sudo systemctl restart docker
 
-## Build the image
+## Build granite image
 
-`docker build -f Containerfile-granite-cuda -t granite-7b-lab-cuda .`
+docker build --build-arg MODEL_FILENANE="granite-7b-lab-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf"  -f Containerfile-granite-cpu -t granite-cpu . 
