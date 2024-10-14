@@ -1,6 +1,6 @@
 # Granite-7b-lab-gguf
 
-This image contains the granite-7b-lab-gguf model and llama.cpp to serve the model.  Once the container starts the api should be available on http://127.0.0.1:8080/v1/chat/completions
+This image contains the granite-7b-lab-gguf model and llama.cpp to serve the model.  The container can run in two modes, CLI to chat with the model, or serving the model for OpenAI API clients
 
 ## Pre-requisites
 
