@@ -28,6 +28,9 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 `podman run  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf:1.0 -s`
 
+### Test curl command
+
+```
 curl http://0.0.0.0:8080/v1/chat/completions \
 -H 'Content-Type: application/json' \
 -d '{
@@ -42,3 +45,4 @@ curl http://0.0.0.0:8080/v1/chat/completions \
         }
       ]
     }'
+  ```
