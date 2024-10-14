@@ -17,10 +17,24 @@ set_default_env_vars() {
   fi
 }
 
+set_default_env_vars_for_server() {
+
+  if [ -z ${LLAMA_N_GPU_LAYERS+x} ]; then
+    export LLAMA_N_GPU_LAYERS=99
+  fi
+  if [ -z ${LLAMA_HOST+x} ]; then
+    export LLAMA_HOST=0.0.0.0
+  fi
+}
+
+# parse arguments starting with LLAMA e.g. converting LLAMA_host to --host
 convert_llama_env_vars() {
+  echo 'running'
+  echo $(env | grep LLAMA_)
   LLAMA_ARGS=$(env | grep LLAMA_ | awk '{
     # for each environment variable
     for (n = 1; n <= NF; n++) {
+    echo $n
       # replace LLAMA_ prefix with --
       sub("^LLAMA_", "--", $n)
       # find first = and split into argument name and value
@@ -36,8 +50,7 @@ convert_llama_env_vars() {
 }
 
 # parse_args_download_model "$@"
-set_default_env_vars
-convert_llama_env_vars
+
 
 handle_options() {
   while [ $# -gt 0 ]; do
@@ -64,8 +77,12 @@ handle_options() {
 handle_options "$@"
 
 if [ "$server_mode" = true ]; then
-llama-server -m $MODEL_PATH  $LLAMA_ARGS --host 0.0.0.0
+  set_default_env_vars_for_server
+  convert_llama_env_vars
+  llama-server -m $MODEL_PATH  $LLAMA_ARGS 
 else
+  set_default_env_vars
+  convert_llama_env_vars
   llama-cli -m $MODEL_PATH -p "You are a helpful assistant" -cnv $LLAMA_ARGS
 fi
 
