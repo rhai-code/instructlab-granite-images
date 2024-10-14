@@ -7,17 +7,26 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 * Docker or Podman
 
 
-## serve the model
+## serve the model and use the CLI
 
 ### docker
 
-`docker run --rm --ipc=host  --network host  quay.io/redhatai/granite-7b-lab-gguf:1.0 `
+`docker run --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf:1.0 `
 
 ### podman
 
-`podman run --rm  --ipc=host  --network host  quay.io/redhatai/granite-7b-lab-gguf:1.0`
+`podman run   --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf:1.0`
 
-## Chat with the model
+## Serve the model for OpenAI Compatible clients
+
+
+### docker
+
+`docker run --network host --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf:1.0 -s `
+
+### podman
+
+`podman run  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf:1.0 -s`
 
 curl http://0.0.0.0:8080/v1/chat/completions \
 -H 'Content-Type: application/json' \

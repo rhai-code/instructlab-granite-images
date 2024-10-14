@@ -32,15 +32,26 @@ sudo systemctl restart docker
 
 sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
-## serve the model
+## serve the model and use the CLI
 
 ### docker
 
-`docker run --rm --runtime=nvidia --gpus all --ipc=host   --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 `
+`docker run --runtime=nvidia --gpus all --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 `
 
 ### podman
 
-`podman run --rm --device nvidia.com/gpu=all --ipc=host  --network host quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0`
+`podman run --device nvidia.com/gpu=all   --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0`
+
+## Serve the model for OpenAI Compatible clients
+
+
+### docker
+
+`docker run --runtime=nvidia --gpus all --network host --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 -s `
+
+### podman
+
+`podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 -s`
 
 
 ## Chat with the model
