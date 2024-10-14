@@ -1,7 +1,7 @@
 # Granite-7b-lab-gguf with CUDA support
 
 
-This image contains the granite-7b-lab-gguf model and llama.cpp to serve the model.  The container can run in two modes, CLI to chat with the model, or serving the model for OpenAI API clients
+This image contains the granite-7b-lab-gguf model and llama.cpp to serve the model with CUDA support.  The container can run in two modes, CLI to chat with the model, or serving the model for OpenAI API clients
 
 ## Pre-requisites
 
