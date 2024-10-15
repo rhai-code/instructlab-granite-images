@@ -54,8 +54,9 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 `podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 -s`
 
 
-## Chat with the model
+### Test curl command
 
+```
 curl http://0.0.0.0:8080/v1/chat/completions \
 -H 'Content-Type: application/json' \
 -d '{
@@ -70,3 +71,4 @@ curl http://0.0.0.0:8080/v1/chat/completions \
         }
       ]
     }'
+  ```
