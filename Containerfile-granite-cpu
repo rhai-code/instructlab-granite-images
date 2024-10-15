@@ -17,7 +17,7 @@ RUN wget ${MODEL_DOWNLOAD_URL} -P /models
 
 # Runtime image
 FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
-ARG MODEL_FILENANE
+ARG MODEL_FILENAME
 RUN microdnf install shadow-utils
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
@@ -26,9 +26,9 @@ COPY --from=0 /usr/lib64/libomp.so ${LD_LIBRARY_PATH}/libomp.so
 # copy llama.cpp binaries
 COPY --from=0 /srv/llama.cpp/llama-cli /usr/local/bin/llama-cli
 COPY --from=0 /srv/llama.cpp/llama-server /usr/local/bin/llama-server
-COPY --from=0 /models/${MODEL_FILENANE} /models/${MODEL_FILENANE} 
+COPY --from=0 /models/${MODEL_FILENAME} /models/${MODEL_FILENAME} 
 
-ENV MODEL_PATH=/models/${MODEL_FILENANE}
+ENV MODEL_PATH=/models/${MODEL_FILENAME}
 EXPOSE 8080
 
 # copy and set entrypoint script

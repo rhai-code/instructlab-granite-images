@@ -1,0 +1,2 @@
+MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf
+MODEL_FILENAME=granite-34b-code-instruct-8k-GGUF
