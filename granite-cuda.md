@@ -49,6 +49,20 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 `podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it redhat/granite-7b-lab-gguf-cuda -s`
 
+## Passing LLAMA.CPP arguments
+
+Arguments can be passed to llama.cpp by using environment variables prefixed with "LLAMA_".
+
+For example, to pass the "--port" argument, set the environment variable "LLAMA_PORT" when runnig the container e.g.
+
+`docker run --runtime=nvidia --gpus all --network host --ipc=host -it -e "LLAMA_PORT=8090" redhat/granite-7b-lab-gguf-cuda -s`
+
+This will start the llama.cpp server listening on port 8090.
+
+For a full list of llama.cpp arguments refer to the llama.cpp documentation:
+
+* [server](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md)
+* [CLI](https://github.com/ggerganov/llama.cpp/blob/master/examples/main/README.md#common-options)
 
 ### Test curl command
 
