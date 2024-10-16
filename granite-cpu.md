@@ -11,22 +11,22 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 ### docker
 
-`docker run --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf:1.0 `
+`docker run --ipc=host -it  redhat/granite-7b-lab-gguf `
 
 ### podman
 
-`podman run   --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf:1.0`
+`podman run   --ipc=host  -it redhat/granite-7b-lab-gguf`
 
 ## Serve the model for OpenAI Compatible clients
 
 
 ### docker
 
-`docker run --network host --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf:1.0 -s `
+`docker run --network host --ipc=host -it  redhat/granite-7b-lab-gguf -s `
 
 ### podman
 
-`podman run  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf:1.0 -s`
+`podman run  --network host --ipc=host  -it redhat/granite-7b-lab-gguf -s`
 
 ### Test curl command
 

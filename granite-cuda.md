@@ -9,10 +9,6 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 * CUDA Toolkit, tested with v12.6
 * nvidia container toolkit
 
-Set the number of GPUS in your system
-
-`export GPUS=1`
-
 ## Install nvidia container toolkit
 
 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
@@ -36,22 +32,22 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 ### docker
 
-`docker run --runtime=nvidia --gpus all --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 `
+`docker run --runtime=nvidia --gpus all --ipc=host -it  redhat/granite-7b-lab-gguf-cuda `
 
 ### podman
 
-`podman run --device nvidia.com/gpu=all   --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0`
+`podman run --device nvidia.com/gpu=all   --ipc=host  -it redhat/granite-7b-lab-gguf-cuda`
 
 ## Serve the model for OpenAI Compatible clients
 
 
 ### docker
 
-`docker run --runtime=nvidia --gpus all --network host --ipc=host -it  quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 -s `
+`docker run --runtime=nvidia --gpus all --network host --ipc=host -it  redhat/granite-7b-lab-gguf-cuda -s `
 
 ### podman
 
-`podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it quay.io/redhatai/granite-7b-lab-gguf-cuda:1.0 -s`
+`podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it redhat/granite-7b-lab-gguf-cuda -s`
 
 
 ### Test curl command

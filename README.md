@@ -11,7 +11,6 @@ This image is optimized for model serving and inference on desktop or Mac enviro
 4. Granite-7b-lab with CUDA Support
 For those with GPU-equipped Linux servers, this image supports faster model inference and serving through CUDA acceleration. This is ideal for high-performance AI applications where response times and throughput are critical.
 
-
 For instructions on use of these images, vist the following pages:
 
 * [granite-cpu](/granite-cpu.md)
