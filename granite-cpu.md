@@ -33,7 +33,7 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 Arguments can be passed to llama.cpp by using environment variables prefixed with "LLAMA_".
 
-For example, to pass the "--port" argument, set the environment variable "LLAMA_PORT" when runnig the container e.g.
+For example, to pass the "--port" argument, set the environment variable "LLAMA_PORT" when running the container e.g.
 
 `docker run --network host --ipc=host -it -e "LLAMA_PORT=8090" redhat/granite-7b-lab-gguf -s`
 
