@@ -54,7 +54,7 @@ curl http://0.0.0.0:8080/v1/chat/completions \
       "messages": [
         {
           "role": "system",
-          "content": "You are a helpful assistant. "
+          "content": "You are a helpful assistant."
         },
         {
           "role": "user", "content": "Tell me a story about a red car"
