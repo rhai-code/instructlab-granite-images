@@ -1,6 +1,6 @@
 # InstructLab and Granite-7b-lab images
 
-This repository contains the Dockerfile to build container images for the following:
+This repository contains the Containerfile to build container images for the following:
 
 1. InstructLab
 Ideal for desktop or Mac users looking to explore InstructLab, this image provides a simple introduction to the platform without requiring specialized hardware. It's perfect for prototyping and testing before scaling up.
