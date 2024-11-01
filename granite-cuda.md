@@ -32,22 +32,22 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 ### docker
 
-`docker run --runtime=nvidia --gpus all --ipc=host -it  redhat/granite-7b-lab-gguf-cuda `
+`docker run --runtime=nvidia --gpus all --ipc=host -it  granite-7b-lab-gguf-cuda`
 
 ### podman
 
-`podman run --device nvidia.com/gpu=all   --ipc=host  -it redhat/granite-7b-lab-gguf-cuda`
+`podman run --device nvidia.com/gpu=all   --ipc=host  -it granite-7b-lab-gguf-cuda`
 
 ## Serve the model for OpenAI Compatible clients
 
 
 ### docker
 
-`docker run --runtime=nvidia --gpus all --network host --ipc=host -it  redhat/granite-7b-lab-gguf-cuda -s `
+`docker run --runtime=nvidia --gpus all --network host --ipc=host -it  granite-7b-lab-gguf-cuda -s `
 
 ### podman
 
-`podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it redhat/granite-7b-lab-gguf-cuda -s`
+`podman run --device nvidia.com/gpu=all  --network host --ipc=host  -it granite-7b-lab-gguf-cuda -s`
 
 ## Passing LLAMA.CPP arguments
 
@@ -55,7 +55,7 @@ Arguments can be passed to llama.cpp by using environment variables prefixed wit
 
 For example, to pass the "--port" argument, set the environment variable "LLAMA_PORT" when running the container e.g.
 
-`docker run --runtime=nvidia --gpus all --network host --ipc=host -it -e "LLAMA_PORT=8090" redhat/granite-7b-lab-gguf-cuda -s`
+`docker run --runtime=nvidia --gpus all --network host --ipc=host -it -e "LLAMA_PORT=8090" granite-7b-lab-gguf-cuda -s`
 
 This will start the llama.cpp server listening on port 8090.
 

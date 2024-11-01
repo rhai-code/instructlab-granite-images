@@ -47,6 +47,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]
 COPY granite-license /licenses/granite-license
 COPY llama-cpp-license /licenses/llama-cpp-license
+COPY EULA.pdf /licenses/EULA.pdf
 
 
 RUN useradd --system --create-home llama

@@ -49,33 +49,33 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 ### docker
 
-docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab model download --repository instructlab/granite-7b-lab  --model-dir /instructlab/share/models --hf-token blah
+docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab model download --repository instructlab/granite-7b-lab  --model-dir /instructlab/share/models --hf-token na
 
 ### podman
 
-podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z quay.io/redhatai/instructlab-cuda:1.0 ilab model download --repository instructlab/granite-7b-lab  --model-dir /instructlab/share/models --hf-token blah
+podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z instructlab-cuda ilab model download --repository instructlab/granite-7b-lab  --model-dir /instructlab/share/models --hf-token na
 
 ## Download the Mixtral-8x7B model for synthetic data generation
 
-docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab model download --repository TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --model-dir /instructlab/share/models --hf-token xxx
+docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab model download --repository TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --model-dir /instructlab/share/models --hf-token na
 
-podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z quay.io/redhatai/instructlab-cuda:1.0 ilab model download --repository TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ   --model-dir /instructlab/share/models --hf-token xxx
+podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z instructlab-cuda ilab model download --repository TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ   --model-dir /instructlab/share/models --hf-token na
 
 
 ## Serve the model
 
 ### docker
 
-docker run --runtime=nvidia --gpus all --ipc=host --network host   -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab serve --model-path /instructlab/share/models/instructlab/granite-7b-lab --gpus $GPUS -- --host 0.0.0.0
+docker run --runtime=nvidia --gpus all --ipc=host --network host   -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab serve --model-path /instructlab/share/models/instructlab/granite-7b-lab --gpus $GPUS -- --host 0.0.0.0
 
-podman run --device nvidia.com/gpu=all --ipc=host --network host   -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab serve --model-path /instructlab/share/models/instructlab/granite-7b-lab --gpus $GPUS -- --host 0.0.0.0
+podman run --device nvidia.com/gpu=all --ipc=host --network host   -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab serve --model-path /instructlab/share/models/instructlab/granite-7b-lab --gpus $GPUS -- --host 0.0.0.0
 
 ## Chat with the model
 
 
-docker run --ipc=host -it  --network host  quay.io/redhatai/instructlab:1.0 ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/instructlab/granite-7b-lab
+docker run --ipc=host -it  --network host  instructlab-cuda ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/instructlab/granite-7b-lab
 
-podman run --ipc=host -it --network host  quay.io/redhatai/instructlab:1.0 ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/instructlab/granite-7b-lab
+podman run --ipc=host -it --network host  instructlab-cuda ilab chat  --endpoint-url http://localhost:8000/v1 -m /instructlab/share/models/instructlab/granite-7b-lab
 
 ## Run synthetic data generation
 
@@ -88,20 +88,20 @@ Edit the taxonomy to add new knowledge
 
 ### docker
 
-docker run --rm --runtime=nvidia --gpus all --ipc=host -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab generate --model /instructlab/share/models/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --gpus $GPUS --output-dir /instructlab/share/datasets --pipeline full
+docker run --rm --runtime=nvidia --gpus all --ipc=host -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab generate --model /instructlab/share/models/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --gpus $GPUS --output-dir /instructlab/share/datasets --pipeline full
 
 ### podman
 
-podman run --rm --device nvidia.com/gpu=all  --gpus all --ipc=host -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z quay.io/redhatai/instructlab-cuda:1.0 ilab generate --model /instructlab/share/models/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --gpus $GPUS --output-dir /instructlab/share/datasets --pipeline full
+podman run --rm --device nvidia.com/gpu=all  --gpus all --ipc=host -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z instructlab-cuda ilab generate --model /instructlab/share/models/TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ  --gpus $GPUS --output-dir /instructlab/share/datasets --pipeline full
 
 ## Train the model 
 
 ### docker
 
-docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab train --gpus $GPUS --data-path /instructlab/share/datasets/knowledge_train_msgs???? --pipeline accelerated --local --device cuda --model-path /instructlab/share/models/instructlab/granite-7b-lab
+docker run  --rm --runtime=nvidia --gpus all --ipc=host  -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab train --gpus $GPUS --data-path /instructlab/share/datasets/knowledge_train_msgs???? --pipeline accelerated --local --device cuda --model-path /instructlab/share/models/instructlab/granite-7b-lab
 
 
 ### podman
 
-podman run  --rm --device nvidia.com/gpu=all --gpus all --ipc=host  -v $INSTRUCTLAB_LOCAL:/instructlab/share quay.io/redhatai/instructlab-cuda:1.0 ilab train --gpus $GPUS --data-path /instructlab/share/datasets/knowledge_train_msgs???? --pipeline accelerated --local --device cuda --model-path /instructlab/share/models/instructlab/granite-7b-lab
+podman run  --rm --device nvidia.com/gpu=all --gpus all --ipc=host  -v $INSTRUCTLAB_LOCAL:/instructlab/share instructlab-cuda ilab train --gpus $GPUS --data-path /instructlab/share/datasets/knowledge_train_msgs???? --pipeline accelerated --local --device cuda --model-path /instructlab/share/models/instructlab/granite-7b-lab
 
