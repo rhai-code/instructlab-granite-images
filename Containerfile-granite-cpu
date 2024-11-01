@@ -32,12 +32,12 @@ ENV MODEL_PATH=/models/${MODEL_FILENAME}
 EXPOSE 8080
 
 # copy and set entrypoint script
-COPY docker-entrypoint.sh /home/llama/docker-entrypoint.sh
+COPY entrypoint.sh /home/llama/entrypoint.sh
 
 COPY granite-license /licenses/granite-license
 COPY llama-cpp-license /licenses/llama-cpp-license
 
-RUN ["chmod", "+x", "/home/llama/docker-entrypoint.sh"]
+RUN ["chmod", "+x", "/home/llama/entrypoint.sh"]
 
 RUN useradd --system --create-home llama
 
@@ -45,4 +45,4 @@ USER llama
 
 WORKDIR /home/llama
 
-ENTRYPOINT [ "/home/llama/docker-entrypoint.sh" ]
+ENTRYPOINT [ "/home/llama/entrypoint.sh" ]
