@@ -1,6 +1,24 @@
 # Building the images
 
-## Install docker if not present
+## Set Hugging Face token
+
+`export HF_TOKEN=xxxx`
+
+## Build with podman
+
+### granite-3.0-8b-instruct-Q4_K_M.gguf
+
+`podman build --build-arg MODEL_FILENAME="granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/RedHatAI/granite-3.0-8b-instruct-GGUF/resolve/main/granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg HF_TOKEN="$HF_TOKEN" -f Containerfile-granite-cpu -t granite-3.0-8b-cpu .`
+
+### granite-34b-code-instruct.Q4_K_M.gguf
+
+`podman build -f Containerfile-granite-cuda --build-arg "MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf" --build-arg "MODEL_FILENANE=granite-34b-code-instruct.Q4_K_M.gguf" -t granite-34b-code-cuda .`
+
+
+
+## Build with docker:
+
+### Install Docker if not present
 
 sudo dnf remove -y docker \
                   docker-client \
@@ -39,13 +57,11 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-contai
 
   sudo systemctl restart docker
 
-## Build granite image
 
-### granite-7b-lab-Q4_K_M.gguf
+### granite-3.0-8b-instruct-Q4_K_M.gguf
 
-
-docker build --build-arg MODEL_FILENANE="granite-7b-lab-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/instructlab/granite-7b-lab-GGUF/resolve/main/granite-7b-lab-Q4_K_M.gguf"  -f Containerfile-granite-cpu -t granite-cpu . 
+`docker build --build-arg MODEL_FILENAME="granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/RedHatAI/granite-3.0-8b-instruct-GGUF/resolve/main/granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg HF_TOKEN="$HF_TOKEN" -f Containerfile-granite-cpu -t granite-3.0-8b-cpu .`
 
 ### granite-34b-code-instruct.Q4_K_M.gguf
 
-docker build -f Containerfile-granite-cuda --build-arg "MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf" --build-arg "MODEL_FILENANE=granite-34b-code-instruct.Q4_K_M.gguf" -t granite-34b-code-cuda .
+`docker build -f Containerfile-granite-cuda --build-arg "MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf" --build-arg "MODEL_FILENANE=granite-34b-code-instruct.Q4_K_M.gguf" -t granite-34b-code-cuda .`

@@ -6,6 +6,7 @@ WORKDIR /srv
 
 ARG MODEL_DOWNLOAD_URL
 ARG MODEL_FILENAME
+ARG HF_TOKEN
 ARG LLAMA_CPP_SHA=1329c0a75e6a7defc5c380eaf80d8e0f66d7da78
 
 # vulkan-headers vulkan-loader-devel vulkan-tools glslc glslang python3-pip mesa-libOpenCL-$MESA_VER.aarch64
@@ -34,7 +35,7 @@ RUN git clone --recursive https://github.com/ggerganov/llama.cpp && \
     cd / && \
     rm -rf llama.cpp
 
-RUN wget ${MODEL_DOWNLOAD_URL} -P /models
+RUN wget --header="Authorization: Bearer ${HF_TOKEN}" ${MODEL_DOWNLOAD_URL} -P /models
 
 # Runtime image
 # FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
