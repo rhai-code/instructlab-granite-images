@@ -19,7 +19,7 @@ RUN cd llama.cpp \
 
 # Download granite model
 
-RUN wget ${MODEL_DOWNLOAD_URL} -P /models
+RUN --mount=type=secret,id=hf-token/token wget --header="Authorization: Bearer $(cat /run/secrets/hf-token/token)" ${MODEL_DOWNLOAD_URL} -P /models
 FROM registry.access.redhat.com/ubi9/ubi-minimal AS env-deploy
 ARG MODEL_FILENAME
 RUN microdnf install shadow-utils

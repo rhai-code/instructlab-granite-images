@@ -18,7 +18,7 @@ metadata:
 spec:
   params:
   - name: build-args-file
-    value: "granite-7b-lab/argfile"
+    value: "granite-3.0-8b-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
