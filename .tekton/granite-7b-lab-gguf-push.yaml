@@ -17,6 +17,8 @@ metadata:
   namespace: ilab-community-tenant
 spec:
   params:
+  - name: ADDITIONAL_SECRET
+    value: hf-token
   - name: build-args-file
     value: "granite-7b-lab/argfile"
   - name: git-url
