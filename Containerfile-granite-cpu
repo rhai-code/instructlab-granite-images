@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi9:9.4-1214.1726694543 AS env-build
 
 WORKDIR /srv
 
-RUN echo $(ls /run/secrets/rhsm)
+RUN echo $(ls /run/secrets)
 # ARG MODEL_DOWNLOAD_URL
 
 ARG MODEL_DOWNLOAD_URL
