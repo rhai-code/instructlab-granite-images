@@ -10,7 +10,7 @@ ARG MODEL_DOWNLOAD_URL
 ARG MODEL_FILENAME
 
 ARG LLAMA_CPP_SHA=1329c0a75e6a7defc5c380eaf80d8e0f66d7da78
-RUN --mount=type=secret,id=hf-token echo 'secret: ' + $(cat /run/secrets/hf-token/token)
+RUN --mount=type=secret,id=hf-token/token echo 'secret: ' + $(cat /run/secrets/hf-token/token)
 # vulkan-headers vulkan-loader-devel vulkan-tools glslc glslang python3-pip mesa-libOpenCL-$MESA_VER.aarch64
 RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
     crb enable && \
