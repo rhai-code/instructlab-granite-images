@@ -4,7 +4,7 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 ## Pre-requisites
 
-* Docker or Podman.
+* Docker or Podman
 
 
 ## serve the model and use the CLI
