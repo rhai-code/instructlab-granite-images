@@ -39,7 +39,7 @@ RUN git clone --recursive https://github.com/ggerganov/llama.cpp && \
 
 RUN --mount=type=secret,id=hf-token/token wget --header="Authorization: Bearer $(cat /run/secrets/hf-token/token)" ${MODEL_DOWNLOAD_URL} -P /models
 
-# Runtime image
+# runtime image
 # FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
 # # ARG MODEL_FILENAME
 # RUN microdnf install shadow-utils
