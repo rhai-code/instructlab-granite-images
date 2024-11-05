@@ -29,6 +29,8 @@ docker run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z redhat/instructlab ilab mo
 podman run -v $INSTRUCTLAB_LOCAL:/instructlab/share:Z redhat/instructlab ilab model download --repository instructlab/granite-7b-lab-gguf  --model-dir /instructlab/share/models --filename granite-7b-lab-Q4_K_M.gguf 
 
 
+
+
 ## Serve the model
 
 ### docker
