@@ -1,62 +1,82 @@
+#BUILD IMAGE
 FROM nvidia/cuda:12.6.1-devel-ubi9 AS env-build
 
 WORKDIR /srv
 
-# install build tools and clone and compile llama.cpp
+# install build tools 
 
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget cmake libcurl-devel
 
+# Set CUDA architecture for CUDA build
 ARG CUDA_DOCKER_ARCH=all
+
+# Register MODEL_DOWNLOAD_URL argument
 ARG MODEL_DOWNLOAD_URL
 
 RUN export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=${CUDA_DOCKER_ARCH}";
 
+# clone and compile llama.cpp
 RUN git clone https://github.com/ggerganov/llama.cpp.git
 
 RUN cd llama.cpp \
   && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=ON ${CMAKE_ARGS} -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined . && \
   cmake --build build --config Release -j$(nproc) 
 
-# Download granite model
-
+# Download granite model using hugging face token from secret
 RUN --mount=type=secret,id=hf-token/token wget --header="Authorization: Bearer $(cat /run/secrets/hf-token/token)" ${MODEL_DOWNLOAD_URL} -P /models
+
+# DEPLOY IMAGE
 FROM registry.access.redhat.com/ubi9/ubi-minimal AS env-deploy
+
+# Register MODEL_FILENAME argument
 ARG MODEL_FILENAME
+
+# Install shadow-utils to add useradd command
 RUN microdnf install shadow-utils
-# copy openmp and cuda libraries
+
+# Set library path
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
+# copy cuda libraries from build image
 COPY --from=0 /usr/local/cuda-12.6/compat/libcuda.so.1 ${LD_LIBRARY_PATH}/libcuda.so.1
-COPY --from=0  /srv/llama.cpp/build/src/libllama.so ${LD_LIBRARY_PATH}/libllama.so
-COPY --from=0  /srv/llama.cpp/build/ggml/src/libggml.so ${LD_LIBRARY_PATH}/libggml.so
 COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcudart.so.12 ${LD_LIBRARY_PATH}/libcudart.so.12
 COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublas.so.12 ${LD_LIBRARY_PATH}/libcublas.so.12
 COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublasLt.so.12 ${LD_LIBRARY_PATH}/libcublasLt.so.12
+
+# copy remaining libraries from build image
+COPY --from=0  /srv/llama.cpp/build/src/libllama.so ${LD_LIBRARY_PATH}/libllama.so
+COPY --from=0  /srv/llama.cpp/build/ggml/src/libggml.so ${LD_LIBRARY_PATH}/libggml.so
 COPY --from=0  /usr/lib64/libgomp.so.1 ${LD_LIBRARY_PATH}/libgomp.so.1
 COPY --from=0  /usr/lib64/libm.so.6 ${LD_LIBRARY_PATH}/libm.so.6
 COPY --from=0  /usr/lib64/libc.so.6 ${LD_LIBRARY_PATH}/libc.so.6
 COPY --from=0  /usr/lib64/libstdc++.so.6 ${LD_LIBRARY_PATH}/libstdc++.so.6
 COPY --from=0  /srv/llama.cpp/build/bin/llama-cli /usr/local/bin/llama-cli
 COPY --from=0  /srv/llama.cpp/build/bin/llama-server /usr/local/bin/llama-server
+
+# Copy model from build image
 COPY --from=0 /models/${MODEL_FILENAME} /models/${MODEL_FILENAME} 
 
+# Set MODEL_PATH as env variable for use by entrypoint shell script.
 ENV MODEL_PATH=/models/${MODEL_FILENAME}
 
 # copy and set entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]
+
+# copy license files
 COPY granite-license /licenses/granite-license
 COPY llama-cpp-license /licenses/llama-cpp-license
 COPY EULA.pdf /licenses/EULA.pdf
 
-
+# create llama user
 RUN useradd --system --create-home llama
 
+# Switch to llama user and set workind directory
 USER llama
 
 WORKDIR /home/llama
 
 EXPOSE 8080
 
-
+# CAll entrypoint shell script
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
