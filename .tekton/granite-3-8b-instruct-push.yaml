@@ -13,7 +13,7 @@ metadata:
     appstudio.openshift.io/application: granite-3-8b-instruct
     appstudio.openshift.io/component: granite-3-8b-instruct
     pipelines.appstudio.openshift.io/type: build
-  name: granite-3-8b-instruct-gguf-on-push
+  name: granite-3-8b-instruct-on-push
   namespace: ilab-community-tenant
 spec:
   params:
@@ -24,7 +24,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-8b-instruct-gguf:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-8b-instruct:{{revision}}
   - name: dockerfile
     value: Containerfile-granite-cpu
   pipelineSpec:
