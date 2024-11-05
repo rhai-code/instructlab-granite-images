@@ -11,21 +11,21 @@ metadata:
       == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: granite-3.0-8b-instruct
-    appstudio.openshift.io/component: granite-3.0-8b-instruct-gguf
+    appstudio.openshift.io/application: granite-3-8b-instruct
+    appstudio.openshift.io/component: granite-3-8b-instruct
     pipelines.appstudio.openshift.io/type: build
-  name: granite-3.0-8b-instruct-gguf-on-pull-request
+  name: granite-3-8b-instruct-gguf-on-pull-request
   namespace: ilab-community-tenant
 spec:
   params:
   - name: build-args-file
-    value: "granite-3.0-8b-instruct/argfile"
+    value: "granite-3-8b-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3.0-8b-instruct-gguf:on-pr-{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-8b-instruct-gguf:on-pr-{{revision}}
   - name: image-expires-after
     value: 5d
   - name: dockerfile
