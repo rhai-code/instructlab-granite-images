@@ -10,21 +10,21 @@ metadata:
       == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: granite-7b
-    appstudio.openshift.io/component: granite-7b-lab-gguf-cuda
+    appstudio.openshift.io/application: granite-3.0-8b-instruct
+    appstudio.openshift.io/component: granite-3.0-8b-instruct-gguf-cuda
     pipelines.appstudio.openshift.io/type: build
-  name: granite-7b-lab-gguf-cuda-on-push
+  name: granite-3.0-8b-instruct-gguf-cuda-on-push
   namespace: ilab-community-tenant
 spec:
   params:
   - name: build-args-file
-    value: "granite-7b-lab/argfile"
+    value: "granite-3.0-8b-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b-lab-gguf-cuda:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3.0-8b-instruct-gguf-cuda:{{revision}}
   - name: dockerfile
     value: Containerfile-granite-cuda
   pipelineSpec:

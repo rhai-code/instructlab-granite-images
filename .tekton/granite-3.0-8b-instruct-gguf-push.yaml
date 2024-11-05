@@ -10,23 +10,23 @@ metadata:
       == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: granite-7b
-    appstudio.openshift.io/component: granite-7b-lab-gguf-cuda
+    appstudio.openshift.io/application: granite-3.0-8b-instruct
+    appstudio.openshift.io/component: granite-3.0-8b-instruct-gguf
     pipelines.appstudio.openshift.io/type: build
-  name: granite-7b-lab-gguf-cuda-on-push
+  name: granite-3.0-8b-instruct-gguf-on-push
   namespace: ilab-community-tenant
 spec:
   params:
   - name: build-args-file
-    value: "granite-7b-lab/argfile"
+    value: "granite-3.0-8b-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b-lab-gguf-cuda:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3.0-8b-instruct-gguf:{{revision}}
   - name: dockerfile
-    value: Containerfile-granite-cuda
+    value: Containerfile-granite-cpu
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
@@ -105,7 +105,8 @@ spec:
       name: build-args-file
       type: string
     - default:
-      - linux-g6xlarge/amd64
+      - linux/x86_64
+      - linux/arm64
       description: List of platforms to build the container images on. The available
         set of values is determined by the configuration of the multi-platform-controller.
       name: build-platforms
@@ -203,6 +204,8 @@ spec:
           - $(params.build-platforms)
       name: build-images
       params:
+      - name: ADDITIONAL_SECRET
+        value: hf-token
       - name: IMAGE
         value: $(params.output-image)
       - name: DOCKERFILE

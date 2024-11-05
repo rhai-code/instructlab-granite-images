@@ -8,11 +8,11 @@
 
 ### granite-3.0-8b-instruct-Q4_K_M.gguf
 
-`podman build --build-arg MODEL_FILENAME="granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/RedHatAI/granite-3.0-8b-instruct-GGUF/resolve/main/granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg HF_TOKEN="$HF_TOKEN" -f Containerfile-granite-cpu -t granite-3.0-8b-cpu .`
+`podman build --build-arg MODEL_FILENAME="granite-3.0-8b-instruct-Q4_K_M.gguf" --build-arg MODEL_DOWNLOAD_URL="https://huggingface.co/RedHatAI/granite-3.0-8b-instruct-GGUF/resolve/main/granite-3.0-8b-instruct-Q4_K_M.gguf"  -f Containerfile-granite-cpu -t granite-3.0-8b-cpu --secret id=hf-token/token,src=/Users/phayes/hf-token/token,type=file .`
 
 ### granite-34b-code-instruct.Q4_K_M.gguf
 
-`podman build -f Containerfile-granite-cuda --build-arg "MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf" --build-arg "MODEL_FILENANE=granite-34b-code-instruct.Q4_K_M.gguf" -t granite-34b-code-cuda --secret=id=/run/secrets/hf-token,src=~/hf-token/token .`
+`podman build -f Containerfile-granite-cpi --build-arg "MODEL_DOWNLOAD_URL=https://huggingface.co/ibm-granite/granite-34b-code-instruct-8k-GGUF/resolve/main/granite-34b-code-instruct.Q4_K_M.gguf" --build-arg "MODEL_FILENAME=granite-34b-code-instruct.Q4_K_M.gguf" -t granite-34b-code-cuda --secret=id=/run/secrets/hf-token,src=/Users/phayes/hf-token/token .`
 
 
 
