@@ -15,7 +15,7 @@ metadata:
     appstudio.openshift.io/application: granite-3-1b-a400m-instruct
     appstudio.openshift.io/component: granite-3-1b-a400m-instruct-cuda
     pipelines.appstudio.openshift.io/type: build
-  name: granite-3-1b-a400m-instruct-gguf-cuda-on-pull-request
+  name: granite-3-1b-a400m-instruct-cuda-on-pull-request
   namespace: ilab-community-tenant
 spec:
   params:
