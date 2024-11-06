@@ -25,7 +25,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-3b-a800m-instruct-gguf-cuda:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-3b-a800m-instruct-cuda:{{revision}}
   - name: dockerfile
     value: Containerfile-granite-cuda
   pipelineSpec:

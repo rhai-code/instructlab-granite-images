@@ -12,21 +12,21 @@ metadata:
       || "Containerfile-granite-cuda".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: granite-3-1b-a400m-instruct
-    appstudio.openshift.io/component: granite-3-1b-a400m-instruct-cuda
+    appstudio.openshift.io/application: granite-3-3b-a800m-instruct
+    appstudio.openshift.io/component: granite-3-3b-a800m-instruct-cuda
     pipelines.appstudio.openshift.io/type: build
-  name: granite-3-1b-a400m-instruct-gguf-cuda-on-pull-request
+  name: granite-3-3b-a800m-instruct-cuda-on-pull-request
   namespace: ilab-community-tenant
 spec:
   params:
   - name: build-args-file
-    value: "granite-3-1b-a400m-instruct/argfile"
+    value: "granite-3-3b-a800m-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-1b-a400m-instruct-gguf-cuda:on-pr-{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-3b-a800m-instruct-cuda:on-pr-{{revision}}
   - name: image-expires-after
     value: 5d
   - name: dockerfile
