@@ -4,7 +4,6 @@ FROM nvidia/cuda:12.6.1-devel-ubi9 AS env-build
 WORKDIR /srv
 
 # install build tools 
-
 RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget cmake libcurl-devel
 
 # Set CUDA architecture for CUDA build
@@ -39,9 +38,9 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 
 # copy cuda libraries from build image
 COPY --from=0 /usr/local/cuda-12.6/compat/libcuda.so.1 ${LD_LIBRARY_PATH}/libcuda.so.1
-COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcudart.so.12 ${LD_LIBRARY_PATH}/libcudart.so.12
-COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublas.so.12 ${LD_LIBRARY_PATH}/libcublas.so.12
-COPY --from=0  /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublasLt.so.12 ${LD_LIBRARY_PATH}/libcublasLt.so.12
+COPY --from=0 /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcudart.so.12 ${LD_LIBRARY_PATH}/libcudart.so.12
+COPY --from=0 /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublas.so.12 ${LD_LIBRARY_PATH}/libcublas.so.12
+COPY --from=0 /usr/local/cuda-12.6/targets/x86_64-linux/lib/libcublasLt.so.12 ${LD_LIBRARY_PATH}/libcublasLt.so.12
 
 # copy remaining libraries from build image
 COPY --from=0  /srv/llama.cpp/build/src/libllama.so ${LD_LIBRARY_PATH}/libllama.so
