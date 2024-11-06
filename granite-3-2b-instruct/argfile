@@ -1,2 +1,2 @@
-MODEL_DOWNLOAD_URL=https://huggingface.co/RedHatAI/granite-3.0-2b-instruct-GGUF/resolve/main/granite-3.0-2b-instruct-Q4_K_M.gguf?download=true
+MODEL_DOWNLOAD_URL=https://huggingface.co/RedHatAI/granite-3.0-2b-instruct-GGUF/resolve/main/granite-3.0-2b-instruct-Q4_K_M.gguf
 MODEL_FILENAME=granite-3.0-2b-instruct-Q4_K_M.gguf
