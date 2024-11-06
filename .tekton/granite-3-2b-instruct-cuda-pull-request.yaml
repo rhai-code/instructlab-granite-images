@@ -207,6 +207,8 @@ spec:
           - $(params.build-platforms)
       name: build-images
       params:
+      - name: ADDITIONAL_SECRET
+        value: hf-token
       - name: IMAGE
         value: $(params.output-image)
       - name: DOCKERFILE
