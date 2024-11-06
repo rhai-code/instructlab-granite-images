@@ -14,7 +14,7 @@ metadata:
     appstudio.openshift.io/application: granite-3-1b-a400m-instruct
     appstudio.openshift.io/component: granite-3-1b-a400m-instruct-cuda
     pipelines.appstudio.openshift.io/type: build
-  name: granite-3-1b-a400m-instruct-gguf-cuda-on-push
+  name: granite-3-1b-a400m-instruct-cuda-on-push
   namespace: ilab-community-tenant
 spec:
   params:
@@ -25,7 +25,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-1b-a400m-instruct-gguf-cuda:{{revision}}
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-1b-a400m-instruct-cuda:{{revision}}
   - name: dockerfile
     value: Containerfile-granite-cuda
   pipelineSpec:
