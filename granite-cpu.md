@@ -28,8 +28,6 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 `podman run --device /dev/dri --network host --ipc=host  -it redhat/granite-7b-lab-gguf -s`
 
-podman run --device /dev/dri --ipc=host  -it quay.io/redhat-user-workloads/ilab-community-tenant/granite-7b-lab-gguf:1c482232bd019bf5bde331b3b82f6bb8a9945ac5-linux-arm64
-
 
 ## Passing LLAMA.CPP arguments
 
@@ -37,7 +35,7 @@ Arguments can be passed to llama.cpp by using environment variables prefixed wit
 
 For example, to pass the "--port" argument, set the environment variable "LLAMA_PORT" when running the container e.g.
 
-`podman run --network host --ipc=host -it -e "LLAMA_PORT=8090" redhat/granite-7b-lab-gguf -s`
+`podman run --network host --device /dev/dri --ipc=host -it -e "LLAMA_PORT=8090" redhat/granite-7b-lab-gguf -s`
 
 This will start the llama.cpp server listening on port 8090.
 

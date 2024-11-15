@@ -1,7 +1,5 @@
 FROM registry.access.redhat.com/ubi9:9.4-1214.1726694543 AS env-build
 
-
-
 WORKDIR /srv
 
 # ARG MODEL_DOWNLOAD_URL
@@ -40,24 +38,7 @@ RUN git clone --recursive https://github.com/ggerganov/llama.cpp && \
 
 RUN --mount=type=secret,id=hf-token/token wget --header="Authorization: Bearer $(cat /run/secrets/hf-token/token)" ${MODEL_DOWNLOAD_URL} -P /models
 
-# runtime image
-# FROM registry.access.redhat.com/ubi9-minimal:9.4-1227.1726694542 AS env-deploy
-# # ARG MODEL_FILENAME
-# RUN microdnf install shadow-utils
 ENV LD_LIBRARY_PATH=/usr/local/lib
-
-# COPY --from=0 /usr/lib64/libomp.so ${LD_LIBRARY_PATH}/libomp.so
-# COPY --from=0 /usr/lib64/libllama.so ${LD_LIBRARY_PATH}/libllama.so
-# COPY --from=0 /usr/lib64/libggml.so ${LD_LIBRARY_PATH}/libggml.so
-# COPY --from=0 /usr/lib64/libgomp.so.1 ${LD_LIBRARY_PATH}/libgomp.so.1
-# COPY --from=0 /usr/lib64/libfmt.so.10 ${LD_LIBRARY_PATH}/libfmt.so.10
-
-
-
-# # copy llama.cpp binaries
-# COPY --from=0 /usr/bin/llama-cli /usr/local/bin/llama-cli
-# COPY --from=0 /usr/bin/llama-server /usr/local/bin/llama-server
-# COPY --from=0 /models/granite-3.0-8b-instruct-Q4_K_M.gguf /models/granite-3.0-8b-instruct-Q4_K_M.gguf 
 
 ENV MODEL_PATH=/models/${MODEL_FILENAME}
 EXPOSE 8080
