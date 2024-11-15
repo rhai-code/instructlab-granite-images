@@ -38,9 +38,6 @@ RUN set -eux; \
 
 RUN set -eux; \
     pip3.11 install instructlab[cuda]==${IL_VERSION}; 
-
-RUN set -eux; \
-    pip3.11 install torch==2.4
     
 ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 
