@@ -45,8 +45,7 @@ RUN set -eux; \
 ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 
 RUN set -eux; \
-    pip3.11 install vllm \
-    rm -rf /root/.cache 
+    pip3.11 install vllm 
 
 COPY config.yaml /instructlab
 
