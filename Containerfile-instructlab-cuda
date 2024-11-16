@@ -53,7 +53,7 @@ COPY config.yaml /instructlab
 USER ilab
 
 RUN set -eux; \
-    ilab config init --non-interactive --profile /instructlab/config.yaml --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
+    ilab config init --non-interactive --train-profile /instructlab/config.yaml --model-path /instructlab/models/instructlab/granite-7b-lab  --taxonomy-path /instructlab/share/taxonomy
 # RUN ilab model download --repository instructlab/granite-7b-lab --model-dir /instructlab/models
 
 ENV GIT_CONFIG_COUNT=1
