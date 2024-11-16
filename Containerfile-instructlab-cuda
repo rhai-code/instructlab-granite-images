@@ -47,8 +47,9 @@ ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 RUN set -eux; \
     pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01
 
-    RUN  pip3.11 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu118torch2.3cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+RUN  pip3.11 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu118torch2.3cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 
+RUN dnf install -y libcudart.so.11.0
 COPY config.yaml /instructlab
 
 USER ilab
