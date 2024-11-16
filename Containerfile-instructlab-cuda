@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.6.1-cudnn-devel-ubi9 AS base
+FROM nvidia/cuda:12.2.2-devel-ubi9 AS base
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
@@ -23,8 +23,8 @@ RUN set -eux; \
         libcudnn9-devel \
         libcudnn8 \
         libcudnn8-devel \
-        cuda-cccl-12-6 \
-        libnccl; 
+        cuda-cccl-12-4 \
+        libnccl-2.22.3-1+cuda12.4.x86_64; 
 
 RUN dnf clean all;
 
@@ -41,7 +41,7 @@ RUN set -eux; \
 RUN set -eux; \
     pip3.11 install instructlab[cuda]==${IL_VERSION}; 
 
-
+    
 ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 
 RUN set -eux; \
@@ -49,7 +49,7 @@ RUN set -eux; \
 
 RUN  pip3.11 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu118torch2.3cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 
-RUN dnf install -y libcudart.so.11.0
+
 COPY config.yaml /instructlab
 
 USER ilab
