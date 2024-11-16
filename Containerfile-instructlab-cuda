@@ -9,7 +9,7 @@ RUN set -eux; \
     groupadd -r ilab --gid=1000; \
     useradd -r -g ilab --uid=1000 --home-dir=/instructlab --shell=/bin/bash ilab; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
-ARG IL_VERSION=v0.21.0
+ARG IL_VERSION=v0.20.2
 WORKDIR /instructlab
 
 RUN set -eux; \
