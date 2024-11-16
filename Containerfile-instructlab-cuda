@@ -23,8 +23,8 @@ RUN set -eux; \
         libcudnn9-devel \
         libcudnn8 \
         libcudnn8-devel \
-        cuda-cccl \
-        libnccl2; 
+        cuda-cccl-12-6 \
+        libnccl; 
 
 RUN dnf clean all;
 
