@@ -47,7 +47,7 @@ ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 RUN set -eux; \
     pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01
 
-RUN pip3.11 install torch==2.4.1
+
 
 COPY config.yaml /instructlab
 
