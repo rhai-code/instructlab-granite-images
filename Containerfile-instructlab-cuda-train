@@ -30,7 +30,9 @@ RUN dnf clean all;
 
 
 RUN alias python3='/usr/bin/python3.11'
-
+RUN set -eux; \
+     pip3.11 install --no-cache instructlab==${IL_VERSION};
+     
 RUN set -eux; \
     pip3.11 install instructlab[cuda]==${IL_VERSION}; 
 
