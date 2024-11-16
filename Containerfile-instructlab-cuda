@@ -17,8 +17,8 @@ RUN set -eux; \
     dnf install -y --setopt=install_weak_deps=False \
         automake \
         git \
-        python3.10-devel \
-        python3.10-pip \
+        python3.11-devel \
+        python3.11-pip \
         libcudnn9 \
         libcudnn9-devel \
         libcudnn8 \
@@ -31,21 +31,21 @@ RUN dnf clean all;
 
 RUN alias python3='/usr/bin/python3.11'
 
-RUN pip3.10 cache remove llama_cpp_python
-RUN pip3.10 install --force-reinstall "llama_cpp_python[server]==0.2.79" --config-settings  cmake.args="-DLLAMA_CUDA=on"
+RUN pip3.11 cache remove llama_cpp_python
+RUN pip3.11 install --force-reinstall "llama_cpp_python[server]==0.2.79" --config-settings  cmake.args="-DLLAMA_CUDA=on"
 
 RUN set -eux; \
-     pip3.10 install --no-cache instructlab==${IL_VERSION};
+     pip3.11 install --no-cache instructlab==${IL_VERSION};
 
 
 RUN set -eux; \
-    pip3.10 install instructlab[cuda]==${IL_VERSION}; 
+    pip3.11 install instructlab[cuda]==${IL_VERSION}; 
 
-    
+RUN  pip3.11 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.8/flash_attn-2.5.8+cu118torch2.3cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 
 RUN set -eux; \
-    pip3.10 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01
+    pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01
 
 
 
