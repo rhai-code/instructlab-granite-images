@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2.2-devel-ubi9 AS base
+FROM nvidia/cuda:12.6.2-devel-ubi9 AS base
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
