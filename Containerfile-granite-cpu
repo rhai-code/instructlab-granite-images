@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9:9.4-1214.1726694543 AS env-build
+FROM registry.access.redhat.com/ubi9:9.5-1734081738 AS env-build
 
 WORKDIR /srv
 
