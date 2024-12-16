@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.10-1088 AS base
+FROM registry.access.redhat.com/ubi8/ubi:8.10-1132.1733300785 AS base
 
 # create a user, specific UID/GID is not necessisarily important, but designed to run as any `--user`
 RUN set -eux; \
