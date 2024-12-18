@@ -4,38 +4,35 @@ metadata:
   annotations:
     build.appstudio.openshift.io/repo: https://github.com/rhai-code/instructlab-granite-images?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
-    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( "granite-31-8b-instruct/***".pathChanged() || ".tekton/granite-31-3b-instruct-push.yaml".pathChanged() || ".tekton/granite-31-3b-instruct-pull-request.yaml".pathChanged()
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
+      == "main" && ( "granite-3-1-8b-instruct/***".pathChanged() || ".tekton/granite-3-1-8b-instruct-push.yaml".pathChanged() || ".tekton/granite-3-1-8b-instruct-pull-request.yaml".pathChanged()
       || "Containerfile-granite-cpu".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: granite-31-8b-instruct
-    appstudio.openshift.io/component: granite-31-8b-instruct
+    appstudio.openshift.io/application: granite-3-1-8b-instruct
+    appstudio.openshift.io/component: granite-3-1-8b-instruct
     pipelines.appstudio.openshift.io/type: build
-  name: granite-31-8b-instruct-on-pull-request
+  name: granite-3-1-8b-instruct-on-push
   namespace: ilab-community-tenant
 spec:
   params:
   - name: build-args-file
-    value: "granite-31-8b-instruct/argfile"
+    value: "granite-3-1-8b-instruct/argfile"
   - name: git-url
     value: '{{source_url}}'
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-31-8b-instruct:on-pr-{{revision}}
-  - name: image-expires-after
-    value: 5d
+    value: quay.io/redhat-user-workloads/ilab-community-tenant/granite-3-1-8b-instruct:{{revision}}
   - name: dockerfile
     value: Containerfile-granite-cpu
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
 
-      _Uses `buildah` to create a multi-platform container image leveraging [trusted artifacts](https://konflux-ci.dev/architecture/ADR/0036-trusted-artifacts.html). It also optionally creates a source image and runs some build-time tests. This pipeline requires that the [multi platform controller](https://github.com/konflux-ci/multi-platform-controller) is deployed and configured on your Konflux instance. Information is shared between tasks using OCI artifacts instead of PVCs. EC will pass the [`trusted_task.trusted`](https://enterprisecontract.dev/docs/ec-policies/release_policy.html#trusted_task__trusted) policy as long as all data used to build the artifact is generated from trusted tasks.
+      _Uses `buildah` to create a multi-platform container image leveraging [trusted artifacts](https://konflux-ci.dev/architecture/ADR/0036-trusted-artifacts.html). It also creates a source image and runs some build-time tests. This pipeline requires that the [multi platform controller](https://github.com/konflux-ci/multi-platform-controller) is deployed and configured on your Konflux instance. Information is shared between tasks using OCI artifacts instead of PVCs. EC will pass the [`trusted_task.trusted`](https://enterprisecontract.dev/docs/ec-policies/release_policy.html#trusted_task__trusted) policy as long as all data used to build the artifact is generated from trusted tasks.
       This pipeline is pushed as a Tekton bundle to [quay.io](https://quay.io/repository/konflux-ci/tekton-catalog/pipeline-docker-build-multi-platform-oci-ta?tab=tags)_
     finally:
     - name: show-sbom
