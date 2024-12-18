@@ -19,7 +19,6 @@ This image contains the granite-7b-lab-gguf model and llama.cpp to serve the mod
 
 ## Serve the model for OpenAI Compatible clients
 
-
 ### docker
 
 `docker run --network host --ipc=host -it  redhat/granite-7b-lab-gguf -s `

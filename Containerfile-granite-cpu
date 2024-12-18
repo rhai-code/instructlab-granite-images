@@ -13,6 +13,7 @@ ARG LLAMA_CPP_SHA=1329c0a75e6a7defc5c380eaf80d8e0f66d7da78
 RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
     crb enable && \
     dnf install -y epel-release && \
+    dnf -y update && \
     dnf --enablerepo=ubi-9-appstream-rpms install -y git procps-ng vim \
       dnf-plugins-core python3-dnf-plugin-versionlock cmake gcc-c++ \
       python3-pip python3-argcomplete && \
@@ -23,14 +24,12 @@ RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.n
     rm -rf /var/cache/*dnf*
 
 # install build tools and clone and compile llama.cpp
-RUN dnf -y update && dnf install -y git make automake gcc gcc-c++ llvm-toolset wget
+RUN dnf install -y git make automake gcc gcc-c++ llvm-toolset wget
 
 RUN git clone --recursive https://github.com/ggerganov/llama.cpp && \
     cd llama.cpp && \
-    git reset --hard ${LLAMA_CPP_SHA} && \
-    cmake -B build -DCMAKE_INSTALL_PREFIX:PATH=/usr -DGGML_KOMPUTE=1 \
-      -DGGML_CCACHE=0 && \
-    cmake --build build --config Release -j $(nproc) && \
+    cmake -B build -DGGML_NATIVE=OFF -DGGML_VULKAN=1 && \
+    cmake --build build --config Release && \
     cmake --install build && \
     cd / && \
     rm -rf llama.cpp
@@ -38,7 +37,7 @@ RUN git clone --recursive https://github.com/ggerganov/llama.cpp && \
 
 RUN --mount=type=secret,id=hf-token/token wget --header="Authorization: Bearer $(cat /run/secrets/hf-token/token)" ${MODEL_DOWNLOAD_URL} -P /models
 
-ENV LD_LIBRARY_PATH=/usr/local/lib
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64/
 
 ENV MODEL_PATH=/models/${MODEL_FILENAME}
 EXPOSE 8080
