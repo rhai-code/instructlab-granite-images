@@ -9,7 +9,7 @@ RUN set -eux; \
     groupadd -r ilab --gid=1000; \
     useradd -r -g ilab --uid=1000 --home-dir=/instructlab --shell=/bin/bash ilab; \
     install --verbose --directory --owner ilab --group ilab --mode 1777 /instructlab
-ARG IL_VERSION=v0.20.1
+ARG IL_VERSION=v0.21.2
 WORKDIR /instructlab
 
 RUN set -eux; \
@@ -45,7 +45,7 @@ RUN set -eux; \
 ENV TORCH_CUDA_ARCH_LIST="8.9 9.0+PTX"
 
 RUN set -eux; \
-    pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@2024.08.01
+    pip3.11 install vllm@git+https://github.com/opendatahub-io/vllm@v0.6.1
 
 
 COPY config.yaml /instructlab
