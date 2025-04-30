@@ -477,7 +477,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-instructlab-cuda
   workspaces:
   - name: git-auth
     secret:
