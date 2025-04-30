@@ -7,8 +7,9 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( "granite-3-3b-a800m-instruct/***".pathChanged() || ".tekton/granite-3-3b-a800m-instruct-push.yaml".pathChanged() || ".tekton/granite-3-3b-a800m-instruct-pull-request.yaml".pathChanged()
-      || "Containerfile-granite-cpu".pathChanged() )
+      == "main" && ( "granite-3-3b-a800m-instruct/***".pathChanged() || ".tekton/granite-3-3b-a800m-instruct-push.yaml".pathChanged()
+      || ".tekton/granite-3-3b-a800m-instruct-pull-request.yaml".pathChanged() ||
+      "Containerfile-granite-cpu".pathChanged() )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: granite-3-3b-a800m-instruct
@@ -19,7 +20,7 @@ metadata:
 spec:
   params:
   - name: build-args-file
-    value: "granite-3-3b-a800m-instruct/argfile"
+    value: granite-3-3b-a800m-instruct/argfile
   - name: git-url
     value: '{{source_url}}'
   - name: revision
@@ -482,7 +483,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-granite-3-3b-a800m-instruct
   workspaces:
   - name: git-auth
     secret:
