@@ -7,8 +7,9 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( "granite-7b-lab/***".pathChanged() || ".tekton/granite-7b-lab-gguf-push.yaml".pathChanged() || ".tekton/granite-7b-lab-gguf-pull-request.yaml".pathChanged()
-      || "Containerfile-granite-cpu".pathChanged() )
+      == "main" && ( "granite-7b-lab/***".pathChanged() || ".tekton/granite-7b-lab-gguf-push.yaml".pathChanged()
+      || ".tekton/granite-7b-lab-gguf-pull-request.yaml".pathChanged() || "Containerfile-granite-cpu".pathChanged()
+      )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: granite-7b
@@ -19,7 +20,7 @@ metadata:
 spec:
   params:
   - name: build-args-file
-    value: "granite-7b-lab/argfile"
+    value: granite-7b-lab/argfile
   - name: git-url
     value: '{{source_url}}'
   - name: revision
@@ -482,7 +483,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-granite-7b-lab-gguf
   workspaces:
   - name: git-auth
     secret:
